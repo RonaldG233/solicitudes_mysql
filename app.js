@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 
 import categoriasRoutes from "./routes/categoriasRoutes.js";
-import productos_routes from "./routes/productos_routes.js"
+import productos_routes from "./routes/productos_routes.js";
 
 
 const app = express();
