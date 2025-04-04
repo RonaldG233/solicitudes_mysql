@@ -1,25 +1,23 @@
 import express from "express";
-import CategoriaController from "../controller/categoriaController.js";
-import {validarCategoria} from "../middlewares/validarCategoria.js";
+import CategoriaController from "../controller/CategoriaController.js";
+import { validarCategoria } from "../middlewares/validarCategoria.js";
+import { validarCategoriaParcial } from "../middlewares/validarCategoriaParcial.js";
 
-const router=express.Router();
+const router = express.Router();
 
+// Obtener todas las categorías
 router.get("/", CategoriaController.getAllCategorias);
 
-router.post('/', validarCategoria, CategoriaController.createCategoria);
+// Crear categoría con validación
+router.post("/", validarCategoria, CategoriaController.createCategoria);
 
-router.put("/:id", CategoriaController.actualizarCategoria );
+// Actualizar completamente una categoría
+router.put("/:id", validarCategoria, CategoriaController.actualizarCategoria);
 
-router.patch("/:id", CategoriaController.actualizarParcialCategoria);
+// Actualizar parcialmente una categoría
+router.patch("/:id", validarCategoriaParcial ,CategoriaController.actualizarParcialCategoria);
+
+router.delete("/:id", CategoriaController.eliminarCategoria);
 
 
-
-router.post("/", (req,res) => {
-    console.log(req.body);
-    
-});
-router.put("/:id", (req,res) => {
-    console.log(req.body);
-    
-});
 export default router;
