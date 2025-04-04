@@ -25,7 +25,7 @@ class Producto{
       const [result] = await connection.query("INSERT INTO productos (nombre,descripcion,precio,categoria_id) values (?,?,?,?)", 
         [this.nombre, this.descripcion,this.precio,this.categoria_id]);
       return {
-      id: result.id,
+      id: result.insertId,
       nombre: this.nombre,
       descripcion: this.descripcion,
       precio:this.precio,

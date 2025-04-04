@@ -69,19 +69,33 @@ class Categoria {
   }
 
   async delete(id) {
-    const [result] = await connection.query(
-      "DELETE FROM categorias WHERE id = ?",
-      [id]
-    );
-  
-    if (result.affectedRows === 0) {
-      throw new Error("Categoría no encontrada.");
+    try {
+      // Validar si existen productos asociados a la categoria
+      const [productos] = await connection.query(
+        "SELECT COUNT(*) AS cantidad FROM productos WHERE categoria_id = ?",
+        [id]
+      );
+
+      if (productos[0].cantidad > 0) {
+        throw new Error("No se puede eliminar la categoría porque tiene productos asociados.");
+      }
+
+      // Si no hay productos, eliminar la categoria
+      const [result] = await connection.query(
+        "DELETE FROM categorias WHERE id = ?",
+        [id]
+      );
+
+      if (result.affectedRows === 0) {
+        throw new Error("Categoría no encontrada.");
+      }
+
+      return { mensaje: "Categoría eliminada correctamente." };
+
+    } catch (error) {
+      throw new Error(error.message);
     }
-  
-    return { mensaje: "Categoría eliminada correctamente." };
   }
-  
-  
 }
 
 export default Categoria;
